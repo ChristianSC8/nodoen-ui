@@ -3,6 +3,7 @@
 import React from "react"
 import { RiBookletLine, RiSearchLine } from "@remixicon/react"
 
+import { Badge } from "@/components/Badge"
 import {
   Drawer,
   DrawerBody,
@@ -14,6 +15,17 @@ import {
 import { Input } from "@/components/Input"
 import { cx, focusRing } from "@/lib/utils"
 import type { VaultTerm } from "@/lib/vault"
+
+const stateVariant = (state: string) => {
+  switch (state) {
+    case "New": return "neutral" as const
+    case "Receptive": return "default" as const
+    case "Emerging": return "warning" as const
+    case "Active": return "success" as const
+    case "Acquired": return "success" as const
+    default: return "neutral" as const
+  }
+}
 
 type VaultSearchProps = {
   terms: VaultTerm[]
@@ -79,14 +91,22 @@ export function VaultSearch({ terms }: VaultSearchProps) {
               {filtered.map((t) => (
                 <li
                   key={t.id}
-                  className="flex items-baseline justify-between py-2.5"
+                  className="flex items-center justify-between py-3"
                 >
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    {t.term}
-                  </span>
-                  <span className="ml-3 text-sm text-gray-500 dark:text-gray-400">
-                    {t.translation}
-                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                      {t.term}
+                    </p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                      {t.translation}
+                    </p>
+                  </div>
+                  <Badge
+                    variant={stateVariant(t.state)}
+                    className="ml-3 shrink-0"
+                  >
+                    {t.state}
+                  </Badge>
                 </li>
               ))}
             </ul>
