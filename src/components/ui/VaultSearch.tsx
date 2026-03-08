@@ -37,7 +37,7 @@ export function VaultSearch({ terms }: VaultSearchProps) {
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && (e.key === "x" || e.key === "X")) {
+      if (e.ctrlKey && (e.key === "<" || e.key === ">" || e.code === "IntlBackslash")) {
         e.preventDefault()
         setOpen((prev) => !prev)
       }
