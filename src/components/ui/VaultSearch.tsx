@@ -33,6 +33,18 @@ type VaultSearchProps = {
 
 export function VaultSearch({ terms }: VaultSearchProps) {
   const [search, setSearch] = React.useState("")
+  const [open, setOpen] = React.useState(false)
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && (e.key === "x" || e.key === "X")) {
+        e.preventDefault()
+        setOpen((prev) => !prev)
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   const sorted = React.useMemo(
     () => [...terms].sort((a, b) => a.term.localeCompare(b.term)),
@@ -48,7 +60,7 @@ export function VaultSearch({ terms }: VaultSearchProps) {
     : sorted
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <button
           aria-label="Search vault"
